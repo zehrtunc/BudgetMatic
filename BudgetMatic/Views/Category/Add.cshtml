@@ -1,0 +1,14 @@
+﻿@model BudgetMatic.Models.ViewModels.CategoryViewModel
+
+
+<div class="container ">
+    <h2>Kategori Ekleme</h2>
+
+    <form asp-action="Add" asp-controller="Category" method="post">
+        <div class="mb-3 col-3">
+            <label class="form-label" for="name">Kategori İsmi</label>
+            <input class="form-control" asp-for="Name" id="name" />
+        </div>
+        <button type="submit" class="btn btn-primary">Ekle</button>
+    </form>
+</div>

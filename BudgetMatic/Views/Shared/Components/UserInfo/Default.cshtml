@@ -1,0 +1,32 @@
+﻿@model BudgetMatic.Models.ViewModels.UserInfoViewModel
+
+
+    <a class="pc-head-link dropdown-toggle arrow-none me-0"
+       data-bs-toggle="dropdown"
+       href="#"
+       role="button"
+       aria-haspopup="false"
+       data-bs-auto-close="outside"
+       aria-expanded="false">
+        <img src="/Matnis/assets/images/user/avatar-10.jpg" alt="user-image" class="user-avtar">
+        <span>@Model.Name @Model.Surname</span>
+    </a>
+    <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+        <div class="dropdown-header">
+            <div class="d-flex mb-1">
+                <div class="flex-shrink-0">
+                    <img src="/Matnis/assets/images/user/avatar-10.jpg" alt="user-image" class="user-avtar wid-35">
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1">@Model.Name @Model.Surname</h6>
+                    <span>@Model.Email</span>
+                </div>
+                <form asp-action="Logout" asp-controller="Account" method="post">
+                    <button type="submit" class="pc-head-link bg-transparent" style="border: none;">
+                        <i class="ti ti-power text-danger"></i>
+                    </button>
+                </form>
+                @*<a href="#!" class="pc-head-link bg-transparent"><i class="ti ti-power text-danger"></i></a>*@
+            </div>
+        </div>
+    </div>
