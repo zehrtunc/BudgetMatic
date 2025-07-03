@@ -8,7 +8,7 @@ namespace BudgetMatic.Models.Entities
         public long Id { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } 
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
