@@ -1,7 +1,48 @@
-﻿
-@{
-    ViewData["Title"] = "MyCategories";
-}
+﻿@model List<BudgetMatic.Models.ViewModels.CategoryViewModel>
 
-<h1>MyCategories</h1>
+<!-- jquery cdn layout da verildi -->
 
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" />
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+<div class="container card">
+    <div class="d-flex justify-content-center align-items-center m-3 mb-3">
+        <h2>Kategoriler</h2>
+        <a href="/Category/Add" class="btn btn-primary ">+ Kategori Ekle</a>
+    </div>
+
+    <table id="category-table">
+        <thead>
+            <tr>
+                <th>Kategori İsmi</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    $(document).ready(() => {
+        new DataTable('#category-table', {
+            ajax: '/Category/GetCategories',
+            columns: [
+                { data: 'name' },
+                {
+                    data: 'id',
+                    render: function (data) {
+                        return `<a href="/Category/Edit/${data}" class="btn btn-warning">Düzenle</a>`;
+                    }
+                },
+                {
+                    data: 'id',
+                    render: function (data) {
+                        return `
+                        <form method="post" action="/Category/Delete">
+                            <input type="hidden" name="id" value="${data}" />
+                            <button type="submit" class="btn btn-danger">Sil</button>
+                        </form>`;
+                    }
+                }
+            ]
+        });
+    });
+</script>
