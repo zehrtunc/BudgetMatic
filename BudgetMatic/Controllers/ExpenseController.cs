@@ -15,9 +15,16 @@ public class ExpenseController : Controller
         _expenseService = expenseService;
         _userManager = userManager;
     }
-    public IActionResult Myexpenses()
+    public IActionResult MyExpenses()
     {
         return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MyMonthlyExpenses()
+    {
+        var models = await _expenseService.GetMonthlyExpenseAsync();
+        return View(models);
     }
 
     [HttpGet]
@@ -38,15 +45,6 @@ public class ExpenseController : Controller
     {
         if (!ModelState.IsValid)
         {
-            foreach (var key in ModelState.Keys)
-            {
-                var state = ModelState[key];
-                if (state.Errors.Any())
-                {
-                    Console.WriteLine($"ModelState Error => Key: {key}, Error: {string.Join(", ", state.Errors.Select(e => e.ErrorMessage))}");
-                }
-            }
-
             model.Categories = await _expenseService.GetCategoriesAsync();
             model.PaymentTypes = await _expenseService.GetPaymentTypesAsync();
 

@@ -1,0 +1,39 @@
+﻿@model List<BudgetMatic.Models.ViewModels.MonthlyExpenseListViewModel>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Harcama</th>
+            <th>Ocak</th>
+            <th>Şubat</th>
+            <th>Mart</th>
+            <th>Nisan</th>
+            <th>Mayıs</th>
+            <th>Haziran</th>
+            <th>Temmuz</th>
+            <th>Ağustos</th>
+            <th>Eylül</th>
+            <th>Ekim</th>
+            <th>Kasım</th>
+            <th>Aralık</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>
+                    @row.CategoryName
+                    <span>@row.Note</span>
+                </td>
+
+                @for (int i = 0; i < 12; i++)
+                {
+                    <td>@(row.MonthlyAmounts[i]?.ToString("C") ?? "-")</td>
+                }
+            </tr>
+
+        }
+    </tbody>
+</table>
+

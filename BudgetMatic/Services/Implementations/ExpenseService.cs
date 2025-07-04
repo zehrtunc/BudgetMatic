@@ -61,4 +61,31 @@ public class ExpenseService : IExpenseService
         return true;
 
     }
+
+    public async Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync()
+    {
+        var expenses = await _context.Expenses.ToListAsync();
+
+        var models = expenses.Select(expense =>
+        {
+            var row = new MonthlyExpenseListViewModel
+            {
+                CategoryName = expense.Category.Name,
+            };
+
+            foreach(var item in expense.ExpenseItems)
+            {
+                int monthIndex = item.Date.Month - 1; // 01 ay olan ocak 0. indexte oldugu icin
+
+                row.MonthlyAmounts[monthIndex] = row.MonthlyAmounts[monthIndex] + item.Amount;
+
+                var note = item.Note;
+            }
+
+            return row;
+
+        }).ToList();
+
+        return models;
+    }
 }
