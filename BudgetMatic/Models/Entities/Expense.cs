@@ -17,7 +17,7 @@ public class Expense
 
     public int? InstallmentCount { get; set; }
 
-    public PayementType PaymentType { get; set; }
+    public PaymentType PaymentType { get; set; }
 
     public long CategoryId { get; set; }
     public virtual Category Category { get; set; }

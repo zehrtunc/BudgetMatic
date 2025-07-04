@@ -36,8 +36,17 @@ public class ExpenseController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(ExpenseViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
+            foreach (var key in ModelState.Keys)
+            {
+                var state = ModelState[key];
+                if (state.Errors.Any())
+                {
+                    Console.WriteLine($"ModelState Error => Key: {key}, Error: {string.Join(", ", state.Errors.Select(e => e.ErrorMessage))}");
+                }
+            }
+
             model.Categories = await _expenseService.GetCategoriesAsync();
             model.PaymentTypes = await _expenseService.GetPaymentTypesAsync();
 

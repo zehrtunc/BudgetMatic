@@ -1,0 +1,64 @@
+﻿@model BudgetMatic.Models.ViewModels.ExpenseViewModel
+
+
+<div class="contaniner d-flex justify-content-center">
+    <div class="card p-4 w-100" style="max-width: 600px;">
+        <h2>Harcama Ekle</h2>
+
+        <form asp-action="Add" asp-controller="Expense" method="post" class="row">
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Tarih</label>
+                <input asp-for="StartDate" type="month" class="form-control" id="startDate">
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3">
+                <label for="totalAmount" class="form-label">Harcama Tutarı</label>
+                <input asp-for="TotalAmount" type="text" class="form-control" id="totalAmount">
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Kategori</label>
+                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                    <option value="">-- Kategori seçiniz --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PaymentType" class="form-label">Ödeme Tipi</label>
+                <select asp-for="PaymentType" asp-items="Model.PaymentTypes" class="form-select" id="paymentType">
+                    <option value="">-- Kategori seçiniz --</option>
+                </select>
+                <span asp-validation-for="PaymentType" class="text-danger"></span>
+            </div>
+            <div class="mb-3" id="installmentCountDiv" style="display: none;">
+                <label>Taksit Sayısı</label>
+                <input asp-for="InstallmentCount" class="form-control" type="number" min="1" />
+                <span asp-validation-for="InstallmentCount" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="note" class="form-label">Not</label>
+                <input asp-for="Note" type="text" class="form-control" id="note">
+            </div>
+            <button type="submit" class="btn btn-primary">Harcamayı Ekle</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(() => {
+        function toggleInstallment() {
+            const selected = $('#paymentType').val();
+            if (selected == '@((int)BudgetMatic.Models.Enums.PaymentType.Installment)') {
+                $('#installmentCountDiv').show();
+            }
+            else {
+                $('#installmentCountDiv').hide();
+                $('#InstallmentCount').val('');
+            }
+        }
+
+        toggleInstallment();
+        $('#paymentType').change(toggleInstallment);
+    });
+</script>

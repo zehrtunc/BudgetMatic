@@ -1,6 +1,6 @@
 ﻿namespace BudgetMatic.Models.Enums
 {
-    public enum PayementType
+    public enum PaymentType
     {
         OneTime = 1,
         Installment = 2,

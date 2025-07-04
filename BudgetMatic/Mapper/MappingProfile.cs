@@ -10,5 +10,7 @@ public class MappingProfile : Profile
     {
         CreateMap<Category, CategoryViewModel>().ReverseMap();
 
+        CreateMap<Expense, ExpenseViewModel>().ReverseMap();
+
     }
 }
