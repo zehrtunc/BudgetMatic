@@ -4,6 +4,7 @@
     <thead>
         <tr>
             <th>Harcama</th>
+            <th>Harcama Notu</th>
             <th>Ocak</th>
             <th>Şubat</th>
             <th>Mart</th>
@@ -19,17 +20,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var row in Model)
+        @foreach (var expense in Model)
         {
             <tr>
-                <td>
-                    @row.CategoryName
-                    <span>@row.Note</span>
-                </td>
+                <td>@expense.CategoryName</td>
+                <td>@expense.Note</td>
 
                 @for (int i = 0; i < 12; i++)
                 {
-                    <td>@(row.MonthlyAmounts[i]?.ToString("C") ?? "-")</td>
+                    <td>@(expense.MonthlyAmounts[i]?.ToString("C") ?? "-")</td>
                 }
             </tr>
 

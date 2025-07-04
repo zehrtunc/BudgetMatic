@@ -6,6 +6,7 @@ using BudgetMatic.Models.ViewModels;
 using BudgetMatic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace BudgetMatic.Services.Implementations;
 
@@ -51,7 +52,6 @@ public class ExpenseService : IExpenseService
             {
                 Date = model.StartDate,
                 Amount = model.TotalAmount,
-                Note = model.Note
             }
         };
 
@@ -65,27 +65,25 @@ public class ExpenseService : IExpenseService
     public async Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync()
     {
         var expenses = await _context.Expenses.ToListAsync();
+        var viewModels = new List<MonthlyExpenseListViewModel>();
 
-        var models = expenses.Select(expense =>
+        foreach (var expense in expenses)
         {
-            var row = new MonthlyExpenseListViewModel
+            var viewModel = new MonthlyExpenseListViewModel
             {
                 CategoryName = expense.Category.Name,
+                Note = expense.Note
             };
 
-            foreach(var item in expense.ExpenseItems)
+            foreach (var expenseItem in expense.ExpenseItems)
             {
-                int monthIndex = item.Date.Month - 1; // 01 ay olan ocak 0. indexte oldugu icin
-
-                row.MonthlyAmounts[monthIndex] = row.MonthlyAmounts[monthIndex] + item.Amount;
-
-                var note = item.Note;
+                int monthIndex = expenseItem.Date.Month - 1;
+                viewModel.MonthlyAmounts[monthIndex] = expenseItem.Amount;
             }
 
-            return row;
+            viewModels.Add(viewModel);
+        }
 
-        }).ToList();
-
-        return models;
+        return viewModels;
     }
 }

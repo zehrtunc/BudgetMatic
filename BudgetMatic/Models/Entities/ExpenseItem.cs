@@ -13,9 +13,6 @@ namespace BudgetMatic.Models.Entities
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
-
-        public string? Note { get; set; }
-
         public long ExpenseId { get; set; }
         public virtual Expense Expense { get; set; }
     }

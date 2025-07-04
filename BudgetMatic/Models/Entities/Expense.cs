@@ -15,6 +15,8 @@ public class Expense
     [Column(TypeName = "decimal(18,2)")]
     public decimal TotalAmount { get; set; }
 
+    public string? Note { get; set; }
+
     public int? InstallmentCount { get; set; }
 
     public PaymentType PaymentType { get; set; }
