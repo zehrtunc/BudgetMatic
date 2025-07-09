@@ -24,7 +24,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
-        var result = await _authService.RegisterAsync(model.Email, model.Password, model.Name, model.Surname); 
+        var result = await _authService.RegisterAsync(model.Email, model.Password, model.Name, model.Surname, model.AvatarPath); 
 
         if(!result)
         {

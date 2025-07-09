@@ -29,6 +29,7 @@ public class UserInfoViewComponent : ViewComponent
             model.Name = user.Name;
             model.Surname = user.Surname;
             model.Email = user.Email;
+            model.AvatarPath = user.AvatarPath;
         }
 
         return View("Default", model);

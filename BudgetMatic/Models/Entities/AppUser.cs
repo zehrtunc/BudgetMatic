@@ -14,4 +14,8 @@ public class AppUser : IdentityUser<long>
     public string Surname { get; set; }
 
     public virtual ICollection<Expense> Expenses { get; set; }
+
+    [Required]
+    public string AvatarPath { get; set; }
+
 }

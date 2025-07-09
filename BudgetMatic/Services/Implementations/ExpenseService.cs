@@ -49,35 +49,26 @@ public class ExpenseService : IExpenseService
 
         expense.ExpenseItems = new List<ExpenseItem>();
 
-        if (model.PaymentType == PaymentType.Installment && model.InstallmentCount.HasValue && model.InstallmentCount > 1)
+        if (model.InstallmentCount.HasValue && model.InstallmentCount > 1)
         {
-            var monthlyAmount = Math.Round(model.TotalAmount / model.InstallmentCount.Value, 2);
-
+            decimal monthlyAmount = 0;
 
             for (int i = 0; i < expense.InstallmentCount.Value; i++)
             {
+                if (expense.PaymentType == PaymentType.Installment)
+                    monthlyAmount = Math.Round(model.TotalAmount / model.InstallmentCount.Value, 2);
+
+
+                else if (expense.PaymentType == PaymentType.Subscription)
+                    monthlyAmount = Math.Round(model.TotalAmount, 2);
+
+
                 expense.ExpenseItems.Add(new ExpenseItem
                 {
                     Date = model.StartDate.AddMonths(i),
                     Amount = monthlyAmount
                 });
             }
-
-        }
-
-        if(model.PaymentType == PaymentType.Subscription)
-        {
-            var monthlyAmount = Math.Round(model.TotalAmount);
-
-            for (int i = 0; i < expense.InstallmentCount.Value; i++)
-            {
-                expense.ExpenseItems.Add(new ExpenseItem
-                {
-                    Date = model.StartDate.AddMonths(i),
-                    Amount = monthlyAmount
-                });
-            }
-
         }
 
         await _context.Expenses.AddAsync(expense);

@@ -15,7 +15,7 @@ public class AuthService : IAuthService
         _signInManager = signInManager;
     }
 
-    public async Task<bool> RegisterAsync(string email, string password, string name, string surname)
+    public async Task<bool> RegisterAsync(string email, string password, string name, string surname, string avatarPath)
     {
         // var olan user var mi varsa register islemi yapilamasin
         var existingUser = await _userManager.FindByEmailAsync(email);
@@ -29,7 +29,8 @@ public class AuthService : IAuthService
             UserName = email,
             Email = email,
             Name = name,
-            Surname = surname
+            Surname = surname,
+            AvatarPath = avatarPath
         };
 
         //Db`de user ekleme

@@ -51,7 +51,7 @@
         <div class="auth-wrapper v3">
             <div class="auth-form">
                 <div class="auth-header">
-                    <a href="#"><img src="/Matnis/assets/images/logo-dark.svg" alt="img"></a>
+                    <a href="#"><img src="/Matnis/assets/images/ButceMatik_logo.svg" alt="img"></a>
                 </div>
                 <div class="card my-5">
                     <div class="card-body">
@@ -64,7 +64,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">İsim</label>
-                                        <input asp-for="Name" type="text" class="form-control" placeholder="İsim">
+                                        <input asp-for="Name" type="text" class="form-control" placeholder="İsim" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -77,15 +77,37 @@
                             <div class="form-group mb-3">
                                 <label class="form-label">Email</label>
                                 <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label">Şifre</label>
                                 <input asp-for="Password" type="password" class="form-control" placeholder="Şifre">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label">Şifre Doğrulama</label>
                                 <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifre Doğrulama">
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
                             </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">Avatar Seç</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @for (int i = 0; i < 10; i++)
+                                    {
+                                        var avatar = $"/Matnis/assets/images/user/avatar-{i + 1}.jpg";
+
+                                        <label class="position-relative">
+                                            <input type="radio" name="AvatarPath" value="@avatar" class="d-none" />
+                                            <img src="@avatar" class="img-thumbnail" style="width: 70px; height: 70px; cursor: pointer;" />
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+
                             <div class="d-grid mt-3">
                                 <button type="submit" class="btn btn-primary">Kayıt Ol</button>
                             </div>
@@ -112,7 +134,15 @@
     <script src="/Matnis/assets/js/plugins/feather.min.js"></script>
 
 
-
+    <script>
+        document.querySelectorAll('.img-thumbnail').forEach(img => {
+            img.addEventListener('click', () => {
+                document.querySelectorAll('.img-thumbnail').forEach(i => i.classList.remove('border-primary'));
+                img.classList.add('border-primary');
+                img.previousElementSibling.checked = true;
+            });
+        });
+    </script>
 
 
     <script>layout_change('light');</script>
@@ -133,7 +163,7 @@
     <script>font_change("Public-Sans");</script>
 
 
-    
+
 </body>
 <!-- [Body] end -->
 
