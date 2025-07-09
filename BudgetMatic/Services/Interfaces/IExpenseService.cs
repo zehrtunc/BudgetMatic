@@ -11,4 +11,7 @@ public interface IExpenseService
 
     Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync();
 
+    Task<bool> DeleteAsync(long id);
+
+
 }

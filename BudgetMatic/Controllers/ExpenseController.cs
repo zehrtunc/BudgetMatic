@@ -56,7 +56,7 @@ public class ExpenseController : Controller
             var user = await _userManager.GetUserAsync(User);
             var result = await _expenseService.CreateAsync(model, user.Id);
 
-            if (result) return RedirectToAction("MyExpenses");
+            if (result) return RedirectToAction("MyMonthlyExpenses");
         }
         catch(Exception)
         {
@@ -68,4 +68,20 @@ public class ExpenseController : Controller
 
         return View(model);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(long id)
+    {
+        try
+        {
+            var result = await _expenseService.DeleteAsync(id);
+            if (result) return RedirectToAction("MyMonthlyExpenses");
+        }
+        catch(Exception)
+        {
+            ModelState.AddModelError("", "Haracama silinirken bir hata oluştu.");
+        }
+        return RedirectToAction("MyMonthlyExpenses");
+    }
+
 }

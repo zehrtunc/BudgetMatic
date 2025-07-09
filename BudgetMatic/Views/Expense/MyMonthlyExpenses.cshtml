@@ -1,38 +1,68 @@
 ﻿@model List<BudgetMatic.Models.ViewModels.MonthlyExpenseListViewModel>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Harcama</th>
-            <th>Harcama Notu</th>
-            <th>Ocak</th>
-            <th>Şubat</th>
-            <th>Mart</th>
-            <th>Nisan</th>
-            <th>Mayıs</th>
-            <th>Haziran</th>
-            <th>Temmuz</th>
-            <th>Ağustos</th>
-            <th>Eylül</th>
-            <th>Ekim</th>
-            <th>Kasım</th>
-            <th>Aralık</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var expense in Model)
-        {
+
+<div class="container card">
+    <div class="d-flex justify-content-between align-items-center m-3 mb-3">
+        <h2>Harcama Takvimim</h2>
+        <a href="/Expense/Add" class="btn btn-primary">+ Harcama Ekle</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@expense.CategoryName</td>
-                <td>@expense.Note</td>
+                <th></th>
+                <th>Harcama</th>
+                <th>Harcama Notu</th>
+                <th>Ocak</th>
+                <th>Şubat</th>
+                <th>Mart</th>
+                <th>Nisan</th>
+                <th>Mayıs</th>
+                <th>Haziran</th>
+                <th>Temmuz</th>
+                <th>Ağustos</th>
+                <th>Eylül</th>
+                <th>Ekim</th>
+                <th>Kasım</th>
+                <th>Aralık</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var expense in Model)
+            {
+                <tr>
+                    <td>
+                        <form method="post" asp-action="Delete" asp-controller="Expense">
+                            <input type="hidden" name="id" value="@expense.Id" />
+                            <button type="submit" class="pc-head-link bg-transparent" style="border: none;">
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                    <td>@expense.CategoryName</td>
+                    <td>@expense.Note</td>
+
+                    @for (int i = 0; i < 12; i++)
+                    {
+                        <td>@(expense.MonthlyAmounts[i]?.ToString("C") ?? "-")</td>
+                    }
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="bg-body-secondary">
+                <td></td>
+                <td><strong>Toplam</strong></td>
+                <td></td>
 
                 @for (int i = 0; i < 12; i++)
                 {
-                    <td>@(expense.MonthlyAmounts[i]?.ToString("C") ?? "-")</td>
+                    var monthlyTotal = Model.Sum(x => x.MonthlyAmounts[i] ?? 0);
+
+                    <td><strong>@monthlyTotal.ToString("C")</strong></td>
                 }
             </tr>
+        </tfoot>
+    </table>
 
-        }
-    </tbody>
-</table>
-
+</div>

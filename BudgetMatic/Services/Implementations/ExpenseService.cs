@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BudgetMatic.Data;
+using BudgetMatic.Helpers;
 using BudgetMatic.Models.Entities;
 using BudgetMatic.Models.Enums;
 using BudgetMatic.Models.ViewModels;
 using BudgetMatic.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using System.Collections.Generic;
 
 namespace BudgetMatic.Services.Implementations;
@@ -36,7 +38,7 @@ public class ExpenseService : IExpenseService
             .Select(p => new SelectListItem
             {
                 Value = ((int)p).ToString(),
-                Text = p.ToString()
+                Text = p.GetDescription()
             }).ToList();
     }
 
@@ -45,15 +47,38 @@ public class ExpenseService : IExpenseService
         var expense = _mapper.Map<Expense>(model);
         expense.UserId = userId;
 
-        // 2.fazda burasi for dongusu ile guncellenecek 
-        expense.ExpenseItems = new List<ExpenseItem>
+        expense.ExpenseItems = new List<ExpenseItem>();
+
+        if (model.PaymentType == PaymentType.Installment && model.InstallmentCount.HasValue && model.InstallmentCount > 1)
         {
-            new ExpenseItem
+            var monthlyAmount = Math.Round(model.TotalAmount / model.InstallmentCount.Value, 2);
+
+
+            for (int i = 0; i < expense.InstallmentCount.Value; i++)
             {
-                Date = model.StartDate,
-                Amount = model.TotalAmount,
+                expense.ExpenseItems.Add(new ExpenseItem
+                {
+                    Date = model.StartDate.AddMonths(i),
+                    Amount = monthlyAmount
+                });
             }
-        };
+
+        }
+
+        if(model.PaymentType == PaymentType.Subscription)
+        {
+            var monthlyAmount = Math.Round(model.TotalAmount);
+
+            for (int i = 0; i < expense.InstallmentCount.Value; i++)
+            {
+                expense.ExpenseItems.Add(new ExpenseItem
+                {
+                    Date = model.StartDate.AddMonths(i),
+                    Amount = monthlyAmount
+                });
+            }
+
+        }
 
         await _context.Expenses.AddAsync(expense);
         await _context.SaveChangesAsync();
@@ -71,6 +96,7 @@ public class ExpenseService : IExpenseService
         {
             var viewModel = new MonthlyExpenseListViewModel
             {
+                Id = expense.Id,
                 CategoryName = expense.Category.Name,
                 Note = expense.Note
             };
@@ -85,5 +111,18 @@ public class ExpenseService : IExpenseService
         }
 
         return viewModels;
+    }
+
+    public async Task<bool> DeleteAsync(long id)
+    {
+        var expense = await _context.Expenses.FindAsync(id);
+
+        if (expense == null) throw new Exception("Silmek istediğiniz harcama bulunamadı.");
+
+        _context.Expenses.Remove(expense);
+        await _context.SaveChangesAsync();
+
+        return true;
+
     }
 }

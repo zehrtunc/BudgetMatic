@@ -1,5 +1,7 @@
 ﻿@model BudgetMatic.Models.ViewModels.ExpenseViewModel
 
+    
+
 
 <div class="contaniner d-flex justify-content-center">
     <div class="card p-4 w-100" style="max-width: 600px;">
@@ -49,7 +51,8 @@
     $(document).ready(() => {
         function toggleInstallment() {
             const selected = $('#paymentType').val();
-            if (selected == '@((int)BudgetMatic.Models.Enums.PaymentType.Installment)') {
+            if (selected == '@((int)BudgetMatic.Models.Enums.PaymentType.Installment)' ||
+                selected == '@((int)BudgetMatic.Models.Enums.PaymentType.Subscription)') {
                 $('#installmentCountDiv').show();
             }
             else {
