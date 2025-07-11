@@ -104,6 +104,14 @@ public class ExpenseService : IExpenseService
         return viewModels;
     }
 
+    public async Task<List<ExpenseListViewModel>> GetAllAsync()
+    {
+        var expenses = await _context.Expenses.ToListAsync();
+
+        return _mapper.Map<List<ExpenseListViewModel>>(expenses);
+    }
+
+
     public async Task<bool> DeleteAsync(long id)
     {
         var expense = await _context.Expenses.FindAsync(id);
@@ -116,4 +124,6 @@ public class ExpenseService : IExpenseService
         return true;
 
     }
+
+ 
 }

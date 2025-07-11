@@ -1,5 +1,6 @@
 ﻿using BudgetMatic.Models.Entities;
 using BudgetMatic.Models.ViewModels;
+using BudgetMatic.Services.Implementations;
 using BudgetMatic.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,25 @@ public class ExpenseController : Controller
         _expenseService = expenseService;
         _userManager = userManager;
     }
-    public IActionResult MyExpenses()
-    {
-        return View();
-    }
 
     [HttpGet]
     public async Task<IActionResult> MyMonthlyExpenses()
     {
         var models = await _expenseService.GetMonthlyExpenseAsync();
         return View(models);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MyExpenses()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GetExpenses()
+    {
+        var models = await _expenseService.GetAllAsync();
+        return Json(new { data = models });
     }
 
     [HttpGet]

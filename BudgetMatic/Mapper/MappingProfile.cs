@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BudgetMatic.Helpers;
 using BudgetMatic.Models.Entities;
 using BudgetMatic.Models.ViewModels;
 
@@ -11,6 +12,12 @@ public class MappingProfile : Profile
         CreateMap<Category, CategoryViewModel>().ReverseMap();
 
         CreateMap<Expense, ExpenseViewModel>().ReverseMap();
+
+        CreateMap<Expense, ExpenseListViewModel>()
+            .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.PaymentType.GetDescription()));
+
+
+        CreateMap<ExpenseListViewModel, Expense>();
 
     }
 }

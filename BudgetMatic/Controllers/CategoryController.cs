@@ -13,11 +13,13 @@ namespace BudgetMatic.Controllers
             _categoryService = categoryService;
         }
 
+        [HttpGet]
         public IActionResult MyCategories()
         {
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
             var models = await _categoryService.GetAllAsync();

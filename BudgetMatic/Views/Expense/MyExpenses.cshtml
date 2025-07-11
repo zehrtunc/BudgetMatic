@@ -1,0 +1,58 @@
+﻿@model BudgetMatic.Models.ViewModels.ExpenseListViewModel
+
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" />
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+<style>
+    #expense-table td,
+    #expense-table th {
+        text-align: center !important;
+    }
+</style>
+
+<div class="container card">
+    <div class="d-flex justify-content-between align-items-center m-3 mb-3">
+        <h2>Harcamalar</h2>
+    </div>
+
+    <table id="expense-table">
+        <thead>
+            <tr>
+                <th>Harcama Yapılan Tarih</th>
+                <th>Harcama Kategorisi</th>
+                <th>Harcama Notu</th>
+                <th>Harcama Tutarı</th>
+                <th>Ödeme Tipi</th>
+                <th>Taksit Sayısı</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    $(document).ready(() => {
+        new DataTable('#expense-table', {
+            ajax: {
+                url: '/Expense/GetExpenses',
+                type: 'POST'
+            },
+            columns: [
+                {
+                    data: 'startDate',
+                    render: function (data) {
+                        var date = new Date(data);
+                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        return `${month}/${date.getFullYear()}`;
+                    }
+                },
+                { data: 'categoryName' },
+                { data: 'note' },
+                { data: 'totalAmount' },
+                { data: 'paymentType' },
+                { data: 'installmentCount' },
+            ]
+        });
+    });
+</script>
