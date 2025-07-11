@@ -49,6 +49,15 @@ public class ExpenseService : IExpenseService
 
         expense.ExpenseItems = new List<ExpenseItem>();
 
+        if (expense.PaymentType == PaymentType.OneTime)
+        {
+            expense.ExpenseItems.Add(new ExpenseItem
+            {
+                Date = model.StartDate,
+                Amount = model.TotalAmount
+            });
+        }
+
         if (model.InstallmentCount.HasValue && model.InstallmentCount > 1)
         {
             decimal monthlyAmount = 0;
