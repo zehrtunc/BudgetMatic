@@ -9,9 +9,9 @@ public interface IExpenseService
     Task<List<SelectListItem>> GetPaymentTypesAsync();
     Task<bool> CreateAsync(ExpenseViewModel model, long userId);
 
-    Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync();
+    Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync(long userId);
 
-    Task<List<ExpenseListViewModel>> GetAllAsync();  
+    Task<List<ExpenseListViewModel>> GetAllAsync(long userId);  
     Task<bool> DeleteAsync(long id);
 
 

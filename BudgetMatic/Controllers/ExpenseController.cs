@@ -20,7 +20,12 @@ public class ExpenseController : Controller
     [HttpGet]
     public async Task<IActionResult> MyMonthlyExpenses()
     {
-        var models = await _expenseService.GetMonthlyExpenseAsync();
+        //var user = await _userManager.GetUserAsync(User);
+
+        long userId = long.Parse(_userManager.GetUserId(User));
+
+        var models = await _expenseService.GetMonthlyExpenseAsync(userId);
+
         return View(models);
     }
 
@@ -33,7 +38,9 @@ public class ExpenseController : Controller
     [HttpPost]
     public async Task<IActionResult> GetExpenses()
     {
-        var models = await _expenseService.GetAllAsync();
+        long userId = long.Parse(_userManager.GetUserId(User));
+
+        var models = await _expenseService.GetAllAsync(userId);
         return Json(new { data = models });
     }
 

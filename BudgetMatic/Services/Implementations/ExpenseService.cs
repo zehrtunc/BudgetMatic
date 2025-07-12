@@ -87,9 +87,9 @@ public class ExpenseService : IExpenseService
 
     }
 
-    public async Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync()
+    public async Task<List<MonthlyExpenseListViewModel>> GetMonthlyExpenseAsync(long userId)
     {
-        var expenses = await _context.Expenses.ToListAsync();
+        var expenses = await _context.Expenses.Where(x => x.UserId == userId).ToListAsync();
         var viewModels = new List<MonthlyExpenseListViewModel>();
 
         foreach (var expense in expenses)
@@ -113,9 +113,9 @@ public class ExpenseService : IExpenseService
         return viewModels;
     }
 
-    public async Task<List<ExpenseListViewModel>> GetAllAsync()
+    public async Task<List<ExpenseListViewModel>> GetAllAsync(long userId)
     {
-        var expenses = await _context.Expenses.ToListAsync();
+        var expenses = await _context.Expenses.Where(x => x.UserId ==userId).ToListAsync();
 
         return _mapper.Map<List<ExpenseListViewModel>>(expenses);
     }
