@@ -61,12 +61,21 @@ public class ExpenseService : IExpenseService
         if (model.InstallmentCount.HasValue && model.InstallmentCount > 1)
         {
             decimal monthlyAmount = 0;
+            decimal difference = 0;
 
             for (int i = 0; i < expense.InstallmentCount.Value; i++)
             {
-                if (expense.PaymentType == PaymentType.Installment)
-                    monthlyAmount = Math.Round(model.TotalAmount / model.InstallmentCount.Value, 2);
 
+                if (expense.PaymentType == PaymentType.Installment)
+                {
+                    monthlyAmount = Math.Round(model.TotalAmount / model.InstallmentCount.Value, 2);
+                    difference = model.TotalAmount - (monthlyAmount * model.InstallmentCount.Value);
+
+                    // Son taksite kurus farkini yansit
+                    if (i == expense.InstallmentCount.Value - 1)
+                        monthlyAmount += difference;
+                    
+                }
 
                 else if (expense.PaymentType == PaymentType.Subscription)
                     monthlyAmount = Math.Round(model.TotalAmount, 2);
